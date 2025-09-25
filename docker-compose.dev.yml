@@ -1,0 +1,48 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bestcrm_postgres_dev
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      default:
+
+
+  backend:
+    image: node:22-alpine
+    container_name: bestcrm_backend_dev
+    working_dir: /app
+    command: sh -c "npm i && npm run start:dev"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      traefik:
+      default:
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.crm-back.rule=Host(`crm.test.test`) && PathPrefix(`/api`)"
+      - "traefik.http.services.crm-back.loadbalancer.server.port=3000"
+      - "traefik.http.routers.crm-back.entryPoints=http,https"
+      - "traefik.docker.network=traefik"
+    ports:
+      - "3000:3000"
+
+networks:
+  traefik:
+    external: true

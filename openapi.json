@@ -1,0 +1,1041 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "JWT access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthTokenResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Register new user",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JWT access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthTokenResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Login and get JWT",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/leads": {
+      "post": {
+        "operationId": "LeadsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLeadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created lead",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create lead",
+        "tags": [
+          "Leads"
+        ]
+      },
+      "get": {
+        "operationId": "LeadsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of leads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LeadResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/leads/{id}": {
+      "get": {
+        "operationId": "LeadsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lead by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leads"
+        ]
+      },
+      "patch": {
+        "operationId": "LeadsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLeadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update lead",
+        "tags": [
+          "Leads"
+        ]
+      },
+      "delete": {
+        "operationId": "LeadsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletion result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/leads/{id}/proposal": {
+      "post": {
+        "operationId": "LeadsController_sendProposal",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/SendProposalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messageId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Send cooperation proposal via SMTP",
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/company-types": {
+      "post": {
+        "operationId": "CompanyTypeController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "example": "b2b"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "B2B"
+                  }
+                },
+                "required": [
+                  "code",
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create company type",
+        "tags": [
+          "Company Types"
+        ]
+      },
+      "get": {
+        "operationId": "CompanyTypeController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of company types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "uuid"
+                      },
+                      "code": {
+                        "type": "string",
+                        "example": "b2b"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "B2B"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2025-09-18T10:00:00.000Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2025-09-18T10:00:00.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Company Types"
+        ]
+      }
+    },
+    "/api/company-types/{id}": {
+      "get": {
+        "operationId": "CompanyTypeController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company type by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "uuid"
+                    },
+                    "code": {
+                      "type": "string",
+                      "example": "b2b"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "B2B"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2025-09-18T10:00:00.000Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2025-09-18T10:00:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Company Types"
+        ]
+      },
+      "patch": {
+        "operationId": "CompanyTypeController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "example": "b2c"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "B2C"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update company type",
+        "tags": [
+          "Company Types"
+        ]
+      },
+      "delete": {
+        "operationId": "CompanyTypeController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletion result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Company Types"
+        ]
+      }
+    },
+    "/api/acl/permissions": {
+      "get": {
+        "operationId": "ACLController_listAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List all permissions",
+        "tags": [
+          "Access Control"
+        ]
+      }
+    },
+    "/api/acl/me/permissions": {
+      "get": {
+        "operationId": "ACLController_listMine",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List current user permissions (role + overrides)",
+        "tags": [
+          "Access Control"
+        ]
+      }
+    },
+    "/api/acl/roles": {
+      "get": {
+        "operationId": "ACLController_listRoles",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List roles",
+        "tags": [
+          "Access Control"
+        ]
+      },
+      "post": {
+        "operationId": "ACLController_createRole",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create role",
+        "tags": [
+          "Access Control"
+        ]
+      }
+    },
+    "/api/acl/roles/{id}": {
+      "patch": {
+        "operationId": "ACLController_updateRole",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update role",
+        "tags": [
+          "Access Control"
+        ]
+      }
+    },
+    "/api/acl/roles/{id}/permissions": {
+      "post": {
+        "operationId": "ACLController_setRolePerms",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "permissionCodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "permissionCodes"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Set role permissions by codes",
+        "tags": [
+          "Access Control"
+        ]
+      }
+    },
+    "/api/acl/users/{id}/overrides": {
+      "post": {
+        "operationId": "ACLController_setUserOverrides",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "overrides": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "allowed": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "overrides"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Set user permission overrides",
+        "tags": [
+          "Access Control"
+        ]
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "operationId": "UsersController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get current user",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/users/me/password": {
+      "patch": {
+        "operationId": "UsersController_changePassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oldPassword": {
+                    "type": "string",
+                    "example": "OldP@ss1"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "example": "NewStr0ngP@ss"
+                  }
+                },
+                "required": [
+                  "oldPassword",
+                  "newPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Change password",
+        "tags": [
+          "Users"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Best CRM API",
+    "description": "API documentation for Best CRM backend",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "example": "Иван Иванов"
+          },
+          "email": {
+            "type": "string",
+            "example": "ivan@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "StrongP@ssw0rd",
+            "minLength": 6
+          }
+        },
+        "required": [
+          "fullName",
+          "email",
+          "password"
+        ]
+      },
+      "AuthTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        },
+        "required": [
+          "access_token"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "ivan@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "StrongP@ssw0rd"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "CreateLeadDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "lead@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+1-555-1234"
+          },
+          "site": {
+            "type": "string",
+            "example": "example.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Interested in product X"
+          },
+          "companyTypeId": {
+            "type": "string",
+            "example": "uuid-of-company-type"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "LeadResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "example": "lead@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+1-555-1234"
+          },
+          "site": {
+            "type": "string",
+            "example": "example.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Interested in product X"
+          },
+          "companyType": {
+            "type": "object",
+            "example": {
+              "id": "uuid",
+              "code": "b2b",
+              "name": "B2B"
+            },
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2025-09-18T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2025-09-18T10:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateLeadDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "lead@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+1-555-1234"
+          },
+          "site": {
+            "type": "string",
+            "example": "example.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Interested in product X"
+          },
+          "companyTypeId": {
+            "type": "string",
+            "example": "uuid-of-company-type"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "SendProposalDto": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "example": "target@company.com"
+          },
+          "subject": {
+            "type": "string",
+            "example": "Предложение о сотрудничестве"
+          },
+          "text": {
+            "type": "string",
+            "example": "Здравствуйте! Предлагаем..."
+          },
+          "html": {
+            "type": "string",
+            "example": "<p>Здравствуйте! Предлагаем...</p>"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "Attachment file"
+          }
+        },
+        "required": [
+          "to",
+          "subject"
+        ]
+      }
+    }
+  }
+}
