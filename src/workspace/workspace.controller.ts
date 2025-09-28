@@ -52,11 +52,21 @@ export class WorkspaceController {
         return this.service.find(id);
     }
 
+    @Get(':workspaceId/users')
+    @ApiOkResponse({
+        type: ResponseWorkspaceDto,
+    })
+    @UseGuards(WorkspaceGuard)
+    @Permissions(PermissionCodes.workspaceRead)
+    async getWorkspaceUsers(@Param('workspaceId') id: string) {
+        return this.service.findUsers(id);
+    }
+
     @Post('')
     @ApiOkResponse({
         type: ResponseFullWorkspaceDto,
     })
-    @Permissions('workspace.create')
+    @Permissions(PermissionCodes.workspaceCreate)
     async create(@Req() req: { user: { userId: string } }, @Body() data: CreateWorkspaceDto) {
         const workspace = await this.service.createWorkspace({ name: data.name });
         await this.service.addUserToWorkspace(workspace.id, req.user.userId);

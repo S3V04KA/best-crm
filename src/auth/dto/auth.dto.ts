@@ -15,6 +15,16 @@ export class LoginDto {
   @ApiProperty({ example: 'ivan@example.com' })
   @IsEmail()
   email!: string;
+
+  @ApiProperty({ minLength: 6, maxLength: 6 })
+  @IsString()
+  code!: string;
+}
+
+export class SendCodeDto {
+  @ApiProperty({ example: 'ivan@example.com' })
+  @IsEmail()
+  email!: string;
 }
 
 export class AuthTokenResponseDto {

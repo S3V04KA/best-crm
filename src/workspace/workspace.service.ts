@@ -12,7 +12,7 @@ export class WorkspaceService {
     constructor(
         @InjectRepository(User) private readonly userRepo: Repository<User>,
         @InjectRepository(Workspace) private readonly workspaceRepo: Repository<Workspace>,
-        @InjectRepository(UserWorkspaceOverride) private readonly workspaceOvverideRepo: Repository<UserWorkspaceOverride>,
+        @InjectRepository(UserWorkspaceOverride) private readonly workspaceOverrideRepo: Repository<UserWorkspaceOverride>,
     ) { }
 
     listAllWorkspaces(): Promise<ResponseWorkspaceDto[]> {
@@ -52,8 +52,18 @@ export class WorkspaceService {
         return workspace;
     }
 
+    async findUsers(id: string) {
+        const workspace = await this.workspaceRepo.findOne({ where: { id } });
+
+        if (!workspace) throw new NotFoundException('Workspace not found');
+
+        const relations = await this.workspaceOverrideRepo.find({ where: { workspace: { id: id } }, relations: { user: true }, withDeleted: false });
+
+        return relations.map((r) => r.user);
+    }
+
     async listCurrntUserWorkspaces(userId: string): Promise<ResponseWorkspaceDto[]> {
-        const overrides = await this.workspaceOvverideRepo.find({ where: { user: { id: userId } }, relations: { workspace: true } });
+        const overrides = await this.workspaceOverrideRepo.find({ where: { user: { id: userId } }, relations: { workspace: true } });
 
         return overrides.map((w) => ({ id: w.workspace.id, name: w.workspace.name }))
     }
@@ -64,13 +74,13 @@ export class WorkspaceService {
         const user = await this.userRepo.findOne({ where: { id: userId } });
         if (!user) throw new NotFoundException('User not found');
 
-        const existing = await this.workspaceOvverideRepo.findOne({ where: { user: { id: userId }, workspace: { id: workspaceId } } });
+        const existing = await this.workspaceOverrideRepo.findOne({ where: { user: { id: userId }, workspace: { id: workspaceId } } });
         if (existing) {
             throw new BadRequestException('User already in this workspace');
         }
 
-        await this.workspaceOvverideRepo.save(
-            this.workspaceOvverideRepo.create({ user, workspace })
+        await this.workspaceOverrideRepo.save(
+            this.workspaceOverrideRepo.create({ user, workspace })
         );
 
         return { success: true };

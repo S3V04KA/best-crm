@@ -101,7 +101,7 @@ export class LeadsWorkspaceController {
 
   @Patch(':id/status')
   @Permissions(PermissionCodes.leadStatus)
-  changeStatus(@Param('id') id: string, @Body() dto: UpdateStatusDto) {
+  changeStatus(@Param('id') id: string, @Body() dto: Partial<UpdateStatusDto>) {
     return this.leadsService.update(id, dto);
   }
 

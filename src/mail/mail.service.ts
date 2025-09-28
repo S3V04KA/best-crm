@@ -26,10 +26,7 @@ export class MailService {
 
     const transporter = createTransport(def, def);
 
-    const from =
-      process.env.MAIL_FROM || 'no-reply@example.com';
     const info = await transporter.sendMail({
-      from,
       to: options.to,
       subject: options.subject,
       text: options.text,

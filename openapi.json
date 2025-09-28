@@ -47,6 +47,30 @@
         ]
       }
     },
+    "/api/auth/send_code": {
+      "post": {
+        "operationId": "AuthController_sendCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/api/auth/login": {
       "post": {
         "operationId": "AuthController_login",
@@ -79,10 +103,20 @@
         ]
       }
     },
-    "/api/leads": {
+    "/api/leads/{workspaceId}": {
       "post": {
-        "operationId": "LeadsController_create",
-        "parameters": [],
+        "operationId": "LeadsWorkspaceController_create",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the workspace",
+            "schema": {
+              "format": "uuid"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -94,15 +128,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Created lead",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LeadResponseDto"
-                }
-              }
-            }
+          "201": {
+            "description": ""
           }
         },
         "security": [
@@ -116,8 +143,18 @@
         ]
       },
       "get": {
-        "operationId": "LeadsController_findAll",
-        "parameters": [],
+        "operationId": "LeadsWorkspaceController_findAllFromWorkspace",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the workspace",
+            "schema": {
+              "format": "uuid"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of leads",
@@ -143,9 +180,9 @@
         ]
       }
     },
-    "/api/leads/{id}": {
+    "/api/leads/{workspaceId}/{id}": {
       "get": {
-        "operationId": "LeadsController_findOne",
+        "operationId": "LeadsWorkspaceController_findOne",
         "parameters": [
           {
             "name": "id",
@@ -153,6 +190,15 @@
             "in": "path",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the workspace",
+            "schema": {
+              "format": "uuid"
             }
           }
         ],
@@ -178,7 +224,7 @@
         ]
       },
       "patch": {
-        "operationId": "LeadsController_update",
+        "operationId": "LeadsWorkspaceController_update",
         "parameters": [
           {
             "name": "id",
@@ -186,6 +232,15 @@
             "in": "path",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the workspace",
+            "schema": {
+              "format": "uuid"
             }
           }
         ],
@@ -215,7 +270,7 @@
         ]
       },
       "delete": {
-        "operationId": "LeadsController_remove",
+        "operationId": "LeadsWorkspaceController_remove",
         "parameters": [
           {
             "name": "id",
@@ -223,6 +278,15 @@
             "in": "path",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the workspace",
+            "schema": {
+              "format": "uuid"
             }
           }
         ],
@@ -254,9 +318,9 @@
         ]
       }
     },
-    "/api/leads/{id}/proposal": {
-      "post": {
-        "operationId": "LeadsController_sendProposal",
+    "/api/leads/{workspaceId}/{id}/status": {
+      "patch": {
+        "operationId": "LeadsWorkspaceController_changeStatus",
         "parameters": [
           {
             "name": "id",
@@ -265,12 +329,68 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the workspace",
+            "schema": {
+              "format": "uuid"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/leads/{workspaceId}/{id}/proposal": {
+      "post": {
+        "operationId": "LeadsWorkspaceController_sendProposal",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the workspace",
+            "schema": {
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SendProposalDto"
               }
@@ -300,6 +420,35 @@
           }
         ],
         "summary": "Send cooperation proposal via SMTP",
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
+    "/api/leads": {
+      "get": {
+        "operationId": "LeadsController_getAllLeads",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of leads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LeadResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Leads"
         ]
@@ -756,6 +905,44 @@
         ]
       }
     },
+    "/api/acl/users/{userId}/role": {
+      "post": {
+        "operationId": "ACLController_setUserRole",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetUserRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Access Control"
+        ]
+      }
+    },
     "/api/users/me": {
       "get": {
         "operationId": "UsersController_me",
@@ -776,30 +963,256 @@
         ]
       }
     },
-    "/api/users/me/password": {
-      "patch": {
-        "operationId": "UsersController_changePassword",
+    "/api/users": {
+      "get": {
+        "operationId": "UsersController_getAllUsers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/workspaces": {
+      "get": {
+        "operationId": "WorkspaceController_listAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseWorkspaceDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Workspace"
+        ]
+      },
+      "post": {
+        "operationId": "WorkspaceController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseFullWorkspaceDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/workspaces/me": {
+      "get": {
+        "operationId": "WorkspaceController_listMine",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseWorkspaceDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/workspaces/{workspaceId}": {
+      "get": {
+        "operationId": "WorkspaceController_getWorkspace",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWorkspaceDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/workspaces/{workspaceId}/users": {
+      "get": {
+        "operationId": "WorkspaceController_getWorkspaceUsers",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseWorkspaceDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/workspaces/{workspaceId}/user/{userId}": {
+      "patch": {
+        "operationId": "WorkspaceController_addUser",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Workspace"
+        ]
+      }
+    },
+    "/api/workspaces/{workspaceId}/ps": {
+      "patch": {
+        "operationId": "WorkspaceController_updatePS",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
                 "type": "object",
                 "properties": {
-                  "oldPassword": {
+                  "text": {
                     "type": "string",
-                    "example": "OldP@ss1"
+                    "example": "Abhdishba"
                   },
-                  "newPassword": {
+                  "html": {
                     "type": "string",
-                    "example": "NewStr0ngP@ss"
+                    "example": "Abhdishba"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
                   }
-                },
-                "required": [
-                  "oldPassword",
-                  "newPassword"
-                ]
+                }
               }
             }
           }
@@ -814,9 +1227,36 @@
             "bearer": []
           }
         ],
-        "summary": "Change password",
         "tags": [
-          "Users"
+          "Workspace"
+        ]
+      }
+    },
+    "/api/workspaces/{id}": {
+      "delete": {
+        "operationId": "WorkspaceController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Workspace"
         ]
       }
     }
@@ -848,17 +1288,11 @@
           "email": {
             "type": "string",
             "example": "ivan@example.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "StrongP@ssw0rd",
-            "minLength": 6
           }
         },
         "required": [
           "fullName",
-          "email",
-          "password"
+          "email"
         ]
       },
       "AuthTokenResponseDto": {
@@ -873,6 +1307,18 @@
           "access_token"
         ]
       },
+      "SendCodeDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "ivan@example.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
       "LoginDto": {
         "type": "object",
         "properties": {
@@ -880,14 +1326,15 @@
             "type": "string",
             "example": "ivan@example.com"
           },
-          "password": {
+          "code": {
             "type": "string",
-            "example": "StrongP@ssw0rd"
+            "minLength": 6,
+            "maxLength": 6
           }
         },
         "required": [
           "email",
-          "password"
+          "code"
         ]
       },
       "CreateLeadDto": {
@@ -949,6 +1396,24 @@
             "type": "string",
             "example": "Interested in product X"
           },
+          "status": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "callType": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
           "companyType": {
             "type": "object",
             "example": {
@@ -1006,34 +1471,127 @@
           "email"
         ]
       },
+      "UpdateStatusDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "lead@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+1-555-1234"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Interested in product X"
+          },
+          "site": {
+            "type": "string",
+            "example": "example.com"
+          },
+          "status": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "callType": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      },
       "SendProposalDto": {
         "type": "object",
         "properties": {
-          "to": {
-            "type": "string",
-            "example": "target@company.com"
-          },
           "subject": {
             "type": "string",
-            "example": "Предложение о сотрудничестве"
-          },
-          "text": {
-            "type": "string",
-            "example": "Здравствуйте! Предлагаем..."
-          },
-          "html": {
-            "type": "string",
-            "example": "<p>Здравствуйте! Предлагаем...</p>"
-          },
-          "file": {
-            "type": "string",
-            "format": "binary",
-            "description": "Attachment file"
+            "example": "Коммерческое предложение",
+            "nullable": true
           }
         },
         "required": [
-          "to",
           "subject"
+        ]
+      },
+      "SetUserRoleDto": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "roleId"
+        ]
+      },
+      "ResponseWorkspaceDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Test Workspace"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ]
+      },
+      "CreateWorkspaceDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Test Workspace"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ResponseFullWorkspaceDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Test Workspace"
+          },
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deletedAt": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "id",
+          "createdAt",
+          "updatedAt",
+          "deletedAt"
         ]
       }
     }
