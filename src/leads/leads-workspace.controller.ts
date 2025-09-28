@@ -18,6 +18,7 @@ import { Lead } from 'src/entities/lead.entity';
 import { CompanyType } from 'src/entities/company-type.entity';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -35,6 +36,7 @@ import { PermissionCodes } from 'src/acl/enums/permission-codes';
 import { WorkspaceGuard } from 'src/auth/workspace.guard';
 import { Workspace } from 'src/entities/workspace.entity';
 import { ApiWorkspaceId } from 'src/auth/workspace.decorator';
+import { User } from 'src/entities/user.entity';
 
 // swagger helper not needed
 
@@ -100,11 +102,17 @@ export class LeadsWorkspaceController {
 
   @Patch(':id')
   @Permissions(PermissionCodes.leadUpdate)
+  @ApiBody({
+    type: UpdateLeadDto,
+  })
   @ApiOperation({ summary: 'Update lead' })
-  update(@Param('id') id: string, @Body() dto: UpdateLeadDto) {
+  update(@Param('id') id: string, @Body() dto: Partial<UpdateLeadDto>) {
     const data: Partial<Lead> = { ...dto } as Partial<Lead>;
     if (dto.companyTypeId) {
       data.companyType = { id: dto.companyTypeId } as unknown as CompanyType;
+    }
+    if (dto.responsibleId) {
+      data.responsible = { id: dto.responsibleId } as unknown as User;
     }
     return this.leadsService.update(id, data);
   }
@@ -125,13 +133,16 @@ export class LeadsWorkspaceController {
   }
 
   @Patch(':id/status')
+  @ApiBody({
+    type: UpdateStatusDto,
+  })
   @Permissions(PermissionCodes.leadStatus)
   changeStatus(@Param('id') id: string, @Body() dto: Partial<UpdateStatusDto>) {
     return this.leadsService.update(id, dto);
   }
 
   @Post(':id/proposal')
-  @Permissions(PermissionCodes.leadUpdate)
+  @Permissions(PermissionCodes.mailSend)
   @ApiOperation({ summary: 'Send cooperation proposal via SMTP' })
   @ApiOkResponse({
     description: 'Result',

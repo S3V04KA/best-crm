@@ -379,6 +379,16 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": ""
@@ -725,7 +735,14 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermissionsResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -745,7 +762,14 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermissionsResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -978,7 +1002,14 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -998,7 +1029,17 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1371,23 +1412,28 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "lead@example.com"
+            "example": "lead@example.com",
+            "nullable": true
           },
           "phoneNumber": {
             "type": "string",
-            "example": "+1-555-1234"
+            "example": "+1-555-1234",
+            "nullable": true
           },
           "site": {
             "type": "string",
-            "example": "example.com"
+            "example": "example.com",
+            "nullable": true
           },
           "name": {
             "type": "string",
-            "example": "John Doe"
+            "example": "John Doe",
+            "nullable": true
           },
           "comment": {
             "type": "string",
-            "example": "Interested in product X"
+            "example": "Interested in product X",
+            "nullable": true
           },
           "companyTypeId": {
             "type": "string",
@@ -1395,6 +1441,30 @@
           }
         },
         "required": [
+          "email",
+          "phoneNumber",
+          "site",
+          "name",
+          "comment",
+          "companyTypeId"
+        ]
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "fullName",
           "email"
         ]
       },
@@ -1452,6 +1522,14 @@
             },
             "nullable": true
           },
+          "responsible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            ]
+          },
           "createdAt": {
             "type": "string",
             "example": "2025-09-18T10:00:00.000Z"
@@ -1464,6 +1542,7 @@
         "required": [
           "id",
           "email",
+          "responsible",
           "createdAt",
           "updatedAt"
         ]
@@ -1473,31 +1552,121 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "lead@example.com"
+            "example": "lead@example.com",
+            "nullable": true
           },
           "phoneNumber": {
             "type": "string",
-            "example": "+1-555-1234"
+            "example": "+1-555-1234",
+            "nullable": true
           },
           "site": {
             "type": "string",
-            "example": "example.com"
+            "example": "example.com",
+            "nullable": true
           },
           "name": {
             "type": "string",
-            "example": "John Doe"
+            "example": "John Doe",
+            "nullable": true
           },
           "comment": {
             "type": "string",
-            "example": "Interested in product X"
+            "example": "Interested in product X",
+            "nullable": true
           },
           "companyTypeId": {
             "type": "string",
             "example": "uuid-of-company-type"
+          },
+          "responsibleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "nullable": true
+          },
+          "callType": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "nullable": true
           }
         },
         "required": [
-          "email"
+          "email",
+          "phoneNumber",
+          "site",
+          "name",
+          "comment",
+          "companyTypeId",
+          "responsibleId",
+          "status",
+          "callType"
+        ]
+      },
+      "UpdateStatusDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "lead@example.com",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+1-555-1234",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "example": "Interested in product X",
+            "nullable": true
+          },
+          "site": {
+            "type": "string",
+            "example": "example.com",
+            "nullable": true
+          },
+          "status": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "nullable": true
+          },
+          "callType": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "email",
+          "phoneNumber",
+          "comment",
+          "site",
+          "status",
+          "callType"
         ]
       },
       "SendProposalDto": {
@@ -1511,6 +1680,42 @@
         },
         "required": [
           "subject"
+        ]
+      },
+      "PermissionsResponseDto": {
+        "type": "object",
+        "properties": {
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "lead.create",
+                "lead.fullRead",
+                "lead.read",
+                "lead.update",
+                "lead.status",
+                "lead.delete",
+                "lead.manage",
+                "mail.send",
+                "companyType.create",
+                "companyType.read",
+                "companyType.update",
+                "companyType.delete",
+                "workspace.create",
+                "workspace.read",
+                "workspace.update",
+                "workspace.delete",
+                "workspace.manage",
+                "users.manage",
+                "acl.read",
+                "acl.manage"
+              ]
+            }
+          }
+        },
+        "required": [
+          "permissions"
         ]
       },
       "SetUserRoleDto": {

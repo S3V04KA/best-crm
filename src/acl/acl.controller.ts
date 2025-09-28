@@ -11,6 +11,7 @@ import {
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiOkResponse,
   ApiOperation,
   ApiProperty,
   ApiTags,
@@ -21,6 +22,7 @@ import { Permissions } from '../auth/roles.decorator';
 import { PermissionsGuard } from '../auth/permissions.guard';
 import { ACLService } from './acl.service';
 import { PermissionCodes } from './enums/permission-codes';
+import { PermissionsResponseDto } from './dto/permissions.dto';
 
 class SetRolePermissionsDto {
   @IsArray()
@@ -48,12 +50,18 @@ export class ACLController {
   @Get('permissions')
   @ApiOperation({ summary: 'List all permissions' })
   @Permissions(PermissionCodes.aclRead)
+  @ApiOkResponse({
+    type: PermissionsResponseDto,
+  })
   listAll() {
     return this.service.listAllPermissions();
   }
 
   @Get('me/permissions')
   @ApiOperation({ summary: 'List current user permissions (role + overrides)' })
+  @ApiOkResponse({
+    type: PermissionsResponseDto,
+  })
   listMine(@Req() req: { user: { userId: string } }) {
     return this.service.listCurrentUserPermissions(req.user.userId);
   }

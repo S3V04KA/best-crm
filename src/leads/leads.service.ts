@@ -36,6 +36,7 @@ export class LeadsService {
     return this.leadRepo.find({
       withDeleted: false,
       where: { workspace: { id: workspaceId } },
+      relations: { responsible: true },
     });
   }
 

@@ -1,38 +1,45 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsOptional, IsString, IsUUID } from 'class-validator';
 import { CallType, LeadStatus } from 'src/entities/lead.entity';
+import { UserDto } from 'src/users/dto/user.dto';
 
 export class CreateLeadDto {
-  @ApiProperty({ example: 'lead@example.com' })
+  @ApiProperty({ example: 'lead@example.com', nullable: true })
   @IsEmail()
   @IsOptional()
   email?: string;
 
-  @ApiPropertyOptional({ example: '+1-555-1234' })
+  @ApiProperty({ example: '+1-555-1234', nullable: true })
   @IsString()
   @IsOptional()
   phoneNumber?: string;
 
-  @ApiPropertyOptional({ example: 'example.com' })
+  @ApiProperty({ example: 'example.com', nullable: true })
   @IsString()
   @IsOptional()
   site?: string;
 
-  @ApiPropertyOptional({ example: 'John Doe' })
+  @ApiProperty({ example: 'John Doe', nullable: true })
   @IsString()
   name: string;
 
-  @ApiPropertyOptional({ example: 'Interested in product X' })
+  @ApiProperty({ example: 'Interested in product X', nullable: true })
   @IsString()
   @IsOptional()
   comment?: string;
 
-  @ApiPropertyOptional({ example: 'uuid-of-company-type' })
+  @ApiProperty({ example: 'uuid-of-company-type' })
   @IsUUID()
   companyTypeId: string;
 }
 
-export class UpdateLeadDto extends CreateLeadDto {}
+export class UpdateLeadDto extends CreateLeadDto {
+  @ApiProperty({ nullable: true })
+  @IsUUID()
+  responsibleId?: string;
+  @ApiProperty({ enum: LeadStatus, nullable: true }) status?: LeadStatus;
+  @ApiProperty({ enum: CallType, nullable: true }) callType?: CallType;
+}
 
 export class UpdateStatusDto {
   @ApiProperty({ example: 'lead@example.com', nullable: true }) email?: string;
@@ -62,6 +69,8 @@ export class LeadResponseDto {
     nullable: true,
   })
   companyType?: unknown;
+  @ApiProperty({ nullable: true })
+  responsible: UserDto;
   @ApiProperty({ example: '2025-09-18T10:00:00.000Z' }) createdAt!: string;
   @ApiProperty({ example: '2025-09-18T10:00:00.000Z' }) updatedAt!: string;
 }

@@ -21,7 +21,7 @@ export class ACLService {
   ) {}
 
   listAllPermissions() {
-    return this.permRepo.find();
+    return { permissions: this.permRepo.find() };
   }
 
   async listCurrentUserPermissions(userId: string) {
@@ -38,9 +38,11 @@ export class ACLService {
     const permMap = new Map<string, boolean>();
     for (const rp of rolePerms) permMap.set(rp.permission.code, true);
     for (const ov of overrides) permMap.set(ov.permission.code, ov.allowed);
-    return Array.from(permMap.entries())
-      .filter(([, allowed]) => allowed)
-      .map(([code]) => code);
+    return {
+      permissions: Array.from(permMap.entries())
+        .filter(([, allowed]) => allowed)
+        .map(([code]) => code),
+    };
   }
 
   // Roles CRUD
