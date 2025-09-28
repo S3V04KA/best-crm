@@ -20,7 +20,7 @@ export class MailService {
       secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: options.user,
-        pass: options.pass
+        pass: options.pass,
       },
     };
 
@@ -33,11 +33,11 @@ export class MailService {
       html: options.html,
       attachments: options.attachment
         ? [
-          {
-            filename: options.attachment.filename,
-            content: options.attachment.content,
-          },
-        ]
+            {
+              filename: options.attachment.filename,
+              content: options.attachment.content,
+            },
+          ]
         : [],
     });
     return { messageId: info.messageId };

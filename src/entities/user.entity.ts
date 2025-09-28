@@ -1,8 +1,23 @@
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, DeleteDateColumn, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from './role.entity';
 import { UserPermissionOverride } from './user-permission-override.entity';
 import { UserWorkspaceOverride } from './workspace-user-override.entity';
+import { Lead } from './lead.entity';
 
 @Entity('users')
 export class User {
@@ -18,6 +33,9 @@ export class User {
 
   @ManyToOne(() => Role, (role) => role.users, { eager: true, nullable: false })
   role!: Role;
+
+  @ManyToOne(() => Lead, (l) => l.responsible, { nullable: true })
+  leads: Lead[];
 
   @OneToMany(() => UserPermissionOverride, (upo) => upo.user, { cascade: true })
   permissionOverrides!: UserPermissionOverride[];
@@ -39,5 +57,3 @@ export class User {
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt?: Date | null;
 }
-
-

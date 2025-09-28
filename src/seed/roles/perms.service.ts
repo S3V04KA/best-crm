@@ -10,7 +10,7 @@ export class SeedPermsService implements OnApplicationBootstrap {
   constructor(
     @InjectRepository(Permission)
     private readonly permRepo: Repository<Permission>,
-  ) { }
+  ) {}
 
   async onApplicationBootstrap() {
     await this.seed();

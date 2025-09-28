@@ -11,6 +11,12 @@ import { SeedMemberService } from './roles/member-role.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Role, Permission, RolePermission])],
-  providers: [SeedPermsService, SeedAdminService, SeedVP4CRService, SeedRespService, SeedMemberService],
+  providers: [
+    SeedPermsService,
+    SeedAdminService,
+    SeedVP4CRService,
+    SeedRespService,
+    SeedMemberService,
+  ],
 })
-export class SeedModule { }
+export class SeedModule {}

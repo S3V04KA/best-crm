@@ -17,10 +17,10 @@ import { UserPermissionOverride } from 'src/entities/user-permission-override.en
       UserPermissionOverride,
       User,
       Workspace,
-      UserWorkspaceOverride
+      UserWorkspaceOverride,
     ]),
   ],
   providers: [WorkspaceService],
-  controllers: [WorkspaceController]
+  controllers: [WorkspaceController],
 })
-export class WorkspaceModule { }
+export class WorkspaceModule {}

@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { User } from './user.entity';
 import { RolePermission } from './role-permission.entity';
 
@@ -20,5 +26,3 @@ export class Role {
   @OneToMany(() => RolePermission, (rp) => rp.role, { cascade: true })
   rolePermissions!: RolePermission[];
 }
-
-

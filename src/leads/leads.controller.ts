@@ -12,16 +12,20 @@ import { LeadResponseDto } from './dto/lead.dto';
 @Controller('leads')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 export class LeadsController {
-    constructor(private readonly leadsService: LeadsService) { }
+  constructor(private readonly leadsService: LeadsService) {}
 
-    @Get('')
-    @Permissions(PermissionCodes.leadRead, PermissionCodes.leadManage, PermissionCodes.leadFullRead)
-    @ApiOkResponse({
-        description: 'List of leads',
-        type: LeadResponseDto,
-        isArray: true,
-    })
-    getAllLeads() {
-        return this.leadsService.findAll();
-    }
+  @Get('')
+  @Permissions(
+    PermissionCodes.leadRead,
+    PermissionCodes.leadManage,
+    PermissionCodes.leadFullRead,
+  )
+  @ApiOkResponse({
+    description: 'List of leads',
+    type: LeadResponseDto,
+    isArray: true,
+  })
+  getAllLeads() {
+    return this.leadsService.findAll();
+  }
 }

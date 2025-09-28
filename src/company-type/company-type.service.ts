@@ -5,7 +5,10 @@ import { CompanyType } from '../entities/company-type.entity';
 
 @Injectable()
 export class CompanyTypeService {
-  constructor(@InjectRepository(CompanyType) private readonly repo: Repository<CompanyType>) {}
+  constructor(
+    @InjectRepository(CompanyType)
+    private readonly repo: Repository<CompanyType>,
+  ) {}
 
   create(data: Partial<CompanyType>) {
     const ct = this.repo.create(data);
@@ -34,5 +37,3 @@ export class CompanyTypeService {
     return { success: true };
   }
 }
-
-

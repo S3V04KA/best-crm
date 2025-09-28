@@ -10,7 +10,7 @@ import { promisify } from 'util';
  * @returns {boolean}
  */
 export const checkIfFileOrDirectoryExists = (path: string): boolean => {
-    return fs.existsSync(path);
+  return fs.existsSync(path);
 };
 
 /**
@@ -22,26 +22,26 @@ export const checkIfFileOrDirectoryExists = (path: string): boolean => {
  * @returns {Promise<Buffer>}
  */
 export const getFile = async (
-    path: string,
-    encoding: string,
+  path: string,
+  encoding: string,
 ): Promise<string | Buffer> => {
-    const readFile = promisify(fs.readFile);
+  const readFile = promisify(fs.readFile);
 
-    return encoding ? readFile(path) : readFile(path, {});
+  return encoding ? readFile(path) : readFile(path, {});
 };
 
 export const createFile = async (
-    path: string,
-    fileName: string,
-    data: any,
+  path: string,
+  fileName: string,
+  data: any,
 ): Promise<void> => {
-    if (!checkIfFileOrDirectoryExists(path)) {
-        fs.mkdirSync(path, { recursive: true });
-    }
+  if (!checkIfFileOrDirectoryExists(path)) {
+    fs.mkdirSync(path, { recursive: true });
+  }
 
-    const writeFile = promisify(fs.writeFile);
+  const writeFile = promisify(fs.writeFile);
 
-    return await writeFile(`${path}/${fileName}`, data);
+  return await writeFile(`${path}/${fileName}`, data);
 };
 
 /**
@@ -52,7 +52,7 @@ export const createFile = async (
  * @returns {Promise<void>}
  */
 export const deleteFile = async (path: string): Promise<void> => {
-    const unlink = promisify(fs.unlink);
+  const unlink = promisify(fs.unlink);
 
-    return await unlink(path);
+  return await unlink(path);
 };

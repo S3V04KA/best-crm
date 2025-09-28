@@ -5,13 +5,13 @@ import { SchemaObjectFactory } from '@nestjs/swagger/dist/services/schema-object
 import { SwaggerTypesMapper } from '@nestjs/swagger/dist/services/swagger-types-mapper';
 
 export function getJsonSchema(targetConstructor: Type<unknown>) {
-    const factory = new SchemaObjectFactory(
-        new ModelPropertiesAccessor(),
-        new SwaggerTypesMapper(),
-    );
+  const factory = new SchemaObjectFactory(
+    new ModelPropertiesAccessor(),
+    new SwaggerTypesMapper(),
+  );
 
-    const schemas: Record<string, SchemaObject> = {};
-    factory.exploreModelSchema(targetConstructor, schemas);
+  const schemas: Record<string, SchemaObject> = {};
+  factory.exploreModelSchema(targetConstructor, schemas);
 
-    return schemas[targetConstructor.name];
+  return schemas[targetConstructor.name];
 }

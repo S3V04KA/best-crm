@@ -8,7 +8,7 @@ import { User } from '../entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepo: Repository<User>,
-  ) { }
+  ) {}
 
   async getById(id: string) {
     const user = await this.userRepo.findOne({ where: { id } });

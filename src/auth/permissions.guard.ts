@@ -16,7 +16,7 @@ export class PermissionsGuard implements CanActivate {
     private readonly userOverrideRepo: Repository<UserPermissionOverride>,
     @InjectRepository(RolePermission)
     private readonly rolePermRepo: Repository<RolePermission>,
-  ) { }
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const required = this.reflector.getAllAndOverride<string[]>(
@@ -40,10 +40,13 @@ export class PermissionsGuard implements CanActivate {
       this.userOverrideRepo.find({
         where: { user: { id: userId }, permission: { code: In(required) } },
         select: { permission: { code: true }, allowed: true },
-        relations: { permission: true }
+        relations: { permission: true },
       }),
       this.rolePermRepo.find({
-        where: { role: { id: user.role.id }, permission: { code: In(required) } },
+        where: {
+          role: { id: user.role.id },
+          permission: { code: In(required) },
+        },
         select: { permission: { code: true }, allowed: true },
         relations: { permission: true },
       }),
@@ -66,7 +69,9 @@ export class PermissionsGuard implements CanActivate {
         continue;
       }
 
-      const rolePerm = rolePermissions.find((rp) => rp.permission.code === code);
+      const rolePerm = rolePermissions.find(
+        (rp) => rp.permission.code === code,
+      );
       if (!rolePerm || !rolePerm.allowed) return false;
     }
 

@@ -180,6 +180,45 @@
         ]
       }
     },
+    "/api/leads/{workspaceId}/me": {
+      "get": {
+        "operationId": "LeadsWorkspaceController_findAllMineFromWorkspace",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "description": "ID of the workspace",
+            "schema": {
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LeadResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Leads"
+        ]
+      }
+    },
     "/api/leads/{workspaceId}/{id}": {
       "get": {
         "operationId": "LeadsWorkspaceController_findOne",
@@ -340,16 +379,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateStatusDto"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": ""
@@ -1470,45 +1499,6 @@
         "required": [
           "email"
         ]
-      },
-      "UpdateStatusDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "example": "lead@example.com"
-          },
-          "phoneNumber": {
-            "type": "string",
-            "example": "+1-555-1234"
-          },
-          "comment": {
-            "type": "string",
-            "example": "Interested in product X"
-          },
-          "site": {
-            "type": "string",
-            "example": "example.com"
-          },
-          "status": {
-            "type": "number",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "callType": {
-            "type": "number",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ]
-          }
-        }
       },
       "SendProposalDto": {
         "type": "object",

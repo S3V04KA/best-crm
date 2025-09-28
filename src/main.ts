@@ -8,10 +8,10 @@ import { writeFileSync } from 'node:fs';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: "*",
-      methods: "*",
-      credentials: true
-    }
+      origin: '*',
+      methods: '*',
+      credentials: true,
+    },
   });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(

@@ -24,4 +24,4 @@ import { User } from '../entities/user.entity';
   controllers: [CompanyTypeController],
   providers: [CompanyTypeService, PermissionsGuard],
 })
-export class CompanyTypeModule { }
+export class CompanyTypeModule {}

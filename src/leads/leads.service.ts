@@ -11,10 +11,12 @@ export class LeadsService {
     private readonly leadRepo: Repository<Lead>,
     @InjectRepository(CompanyType)
     private readonly companyTypeRepo: Repository<CompanyType>,
-  ) { }
+  ) {}
 
   async create(data: Partial<Lead>) {
-    const companyType = await this.companyTypeRepo.findOne({ where: { id: data.companyType?.id } });
+    const companyType = await this.companyTypeRepo.findOne({
+      where: { id: data.companyType?.id },
+    });
 
     if (!companyType) {
       throw new NotFoundException('Company type not found');
@@ -31,7 +33,17 @@ export class LeadsService {
   }
 
   findAllFromWorkspace(workspaceId: string) {
-    return this.leadRepo.find({ withDeleted: false, where: { workspace: { id: workspaceId } } });
+    return this.leadRepo.find({
+      withDeleted: false,
+      where: { workspace: { id: workspaceId } },
+    });
+  }
+
+  findAllMineFromWorkspace(workspaceId: string, userId: string) {
+    return this.leadRepo.find({
+      withDeleted: false,
+      where: { workspace: { id: workspaceId }, responsible: { id: userId } },
+    });
   }
 
   async findOne(id: string) {
@@ -41,7 +53,10 @@ export class LeadsService {
   }
 
   async findOneWithWorkspace(id: string) {
-    const lead = await this.leadRepo.findOne({ where: { id }, relations: { workspace: true } });
+    const lead = await this.leadRepo.findOne({
+      where: { id },
+      relations: { workspace: true },
+    });
     if (!lead) throw new NotFoundException('Lead not found');
     return lead;
   }

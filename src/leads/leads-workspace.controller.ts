@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { LeadsService } from './leads.service';
@@ -21,7 +22,12 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateLeadDto, UpdateLeadDto, LeadResponseDto, UpdateStatusDto } from './dto/lead.dto';
+import {
+  CreateLeadDto,
+  UpdateLeadDto,
+  LeadResponseDto,
+  UpdateStatusDto,
+} from './dto/lead.dto';
 import { SendProposalDto } from './dto/proposal.dto';
 import { MailService } from 'src/mail/mail.service';
 import { readFile } from 'fs/promises';
@@ -41,15 +47,18 @@ export class LeadsWorkspaceController {
   constructor(
     private readonly leadsService: LeadsService,
     private readonly mailService: MailService,
-  ) { }
+  ) {}
 
   @Post('')
   @Permissions(PermissionCodes.leadCreate)
   @ApiOperation({ summary: 'Create lead' })
-  create(@Param('workspaceId') workspaceId: string, @Body() dto: CreateLeadDto) {
+  create(
+    @Param('workspaceId') workspaceId: string,
+    @Body() dto: CreateLeadDto,
+  ) {
     const data: Partial<Lead> = { ...dto } as Partial<Lead>;
     if (!dto.companyTypeId) {
-
+      throw new BadRequestException('');
     }
     data.workspace = { id: workspaceId } as unknown as Workspace;
     return this.leadsService.create(data);
@@ -64,6 +73,22 @@ export class LeadsWorkspaceController {
   })
   findAllFromWorkspace(@Param('workspaceId') workspaceId: string) {
     return this.leadsService.findAllFromWorkspace(workspaceId);
+  }
+
+  @Get('me')
+  @Permissions(PermissionCodes.leadRead)
+  @ApiOkResponse({
+    type: LeadResponseDto,
+    isArray: true,
+  })
+  findAllMineFromWorkspace(
+    @Req() req: { user: { userId: string } },
+    @Param('workspaceId') workspaceId: string,
+  ) {
+    return this.leadsService.findAllMineFromWorkspace(
+      workspaceId,
+      req.user.userId,
+    );
   }
 
   @Get(':id')
@@ -112,10 +137,7 @@ export class LeadsWorkspaceController {
     description: 'Result',
     schema: { type: 'object', properties: { messageId: { type: 'string' } } },
   })
-  async sendProposal(
-    @Param('id') id: string,
-    @Body() dto: SendProposalDto,
-  ) {
+  async sendProposal(@Param('id') id: string, @Body() dto: SendProposalDto) {
     // If not provided, default to lead email
     const lead = await this.leadsService.findOneWithWorkspace(id);
 

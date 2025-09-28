@@ -18,7 +18,7 @@ export class ACLService {
     @InjectRepository(UserPermissionOverride)
     private readonly userOverrideRepo: Repository<UserPermissionOverride>,
     @InjectRepository(User) private readonly userRepo: Repository<User>,
-  ) { }
+  ) {}
 
   listAllPermissions() {
     return this.permRepo.find();
@@ -125,7 +125,10 @@ export class ACLService {
   }
 
   async setUserRole(userId: string, roleId: string) {
-    const user = await this.userRepo.findOne({ where: { id: userId }, relations: { role: true } });
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      relations: { role: true },
+    });
     if (!user) throw new NotFoundException('User not found');
     const role = await this.roleRepo.findOne({ where: { id: roleId } });
     if (!role) throw new NotFoundException('Role not found');

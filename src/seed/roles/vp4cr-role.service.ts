@@ -15,7 +15,7 @@ export class SeedVP4CRService implements OnApplicationBootstrap {
     private readonly permRepo: Repository<Permission>,
     @InjectRepository(RolePermission)
     private readonly rolePermRepo: Repository<RolePermission>,
-  ) { }
+  ) {}
 
   async onApplicationBootstrap() {
     await this.seed();

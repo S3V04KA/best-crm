@@ -46,7 +46,7 @@ class UpdateCompanyTypeDto {
 @Controller('company-types')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 export class CompanyTypeController {
-  constructor(private readonly service: CompanyTypeService) { }
+  constructor(private readonly service: CompanyTypeService) {}
 
   @Post()
   @Permissions(PermissionCodes.companyTypeCreate)

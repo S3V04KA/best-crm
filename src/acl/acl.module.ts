@@ -23,4 +23,4 @@ import { ACLService } from './acl.service';
   controllers: [ACLController],
   providers: [ACLService, JwtAuthGuard, PermissionsGuard],
 })
-export class ACLModule { }
+export class ACLModule {}

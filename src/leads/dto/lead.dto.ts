@@ -32,12 +32,13 @@ export class CreateLeadDto {
   companyTypeId: string;
 }
 
-export class UpdateLeadDto extends CreateLeadDto { }
+export class UpdateLeadDto extends CreateLeadDto {}
 
 export class UpdateStatusDto {
   @ApiProperty({ example: 'lead@example.com', nullable: true }) email?: string;
   @ApiProperty({ example: '+1-555-1234', nullable: true }) phoneNumber?: string;
-  @ApiProperty({ example: 'Interested in product X', nullable: true }) comment?: string;
+  @ApiProperty({ example: 'Interested in product X', nullable: true })
+  comment?: string;
   @ApiProperty({ example: 'example.com', nullable: true }) site?: string;
   @ApiProperty({ enum: LeadStatus, nullable: true }) status?: LeadStatus;
   @ApiProperty({ enum: CallType, nullable: true }) callType?: CallType;
@@ -50,8 +51,8 @@ export class LeadResponseDto {
   @ApiPropertyOptional({ example: 'example.com' }) site?: string;
   @ApiPropertyOptional({ example: 'John Doe' }) name?: string;
   @ApiPropertyOptional({ example: 'Interested in product X' }) comment?: string;
-  @ApiPropertyOptional({ enum: LeadStatus }) status?: LeadStatus
-  @ApiPropertyOptional({ enum: CallType }) callType?: CallType
+  @ApiPropertyOptional({ enum: LeadStatus }) status?: LeadStatus;
+  @ApiPropertyOptional({ enum: CallType }) callType?: CallType;
   @ApiPropertyOptional({
     example: {
       id: 'uuid',
@@ -64,4 +65,3 @@ export class LeadResponseDto {
   @ApiProperty({ example: '2025-09-18T10:00:00.000Z' }) createdAt!: string;
   @ApiProperty({ example: '2025-09-18T10:00:00.000Z' }) updatedAt!: string;
 }
-

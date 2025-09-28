@@ -21,7 +21,7 @@ export class AuthService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
-  ) { }
+  ) {}
 
   async validateUser(email: string, code: string): Promise<User> {
     const user = await this.userRepo.findOne({ where: { email } });
@@ -59,9 +59,9 @@ export class AuthService {
       text: code,
       user: process.env.SMTP_MAIL_USER || '',
       pass: process.env.SMTP_MAIL_PASS || '',
-    })
+    });
 
-    return { success: true }
+    return { success: true };
   }
 
   async login(user: { id: string; email: string; role?: Role | null }) {

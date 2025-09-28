@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { RolePermission } from './role-permission.entity';
 import { UserPermissionOverride } from './user-permission-override.entity';
 
@@ -20,5 +26,3 @@ export class Permission {
   @OneToMany(() => UserPermissionOverride, (upo) => upo.permission)
   userOverrides!: UserPermissionOverride[];
 }
-
-

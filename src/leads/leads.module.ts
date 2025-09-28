@@ -31,4 +31,4 @@ import { LeadsController } from './leads.controller';
   controllers: [LeadsWorkspaceController, LeadsController],
   providers: [LeadsService, PermissionsGuard],
 })
-export class LeadsModule { }
+export class LeadsModule {}

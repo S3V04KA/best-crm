@@ -8,10 +8,15 @@ import { UserPermissionOverride } from 'src/entities/user-permission-override.en
 import { RolePermission } from 'src/entities/role-permission.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Permission, UserPermissionOverride, RolePermission])],
+  imports: [
+    TypeOrmModule.forFeature([
+      User,
+      Permission,
+      UserPermissionOverride,
+      RolePermission,
+    ]),
+  ],
   controllers: [UsersController],
   providers: [UsersService],
 })
-export class UsersModule { }
-
-
+export class UsersModule {}

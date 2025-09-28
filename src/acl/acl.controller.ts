@@ -8,8 +8,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
-import { IsArray, IsString, IsUUID } from 'class-validator';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiProperty,
+  ApiTags,
+} from '@nestjs/swagger';
+import { IsArray, IsUUID } from 'class-validator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Permissions } from '../auth/roles.decorator';
 import { PermissionsGuard } from '../auth/permissions.guard';
@@ -29,7 +35,7 @@ class SetUserOverridesDto {
 class SetUserRoleDto {
   @ApiProperty()
   @IsUUID()
-  roleId: string
+  roleId: string;
 }
 
 @ApiTags('Access Control')
@@ -37,7 +43,7 @@ class SetUserRoleDto {
 @Controller('acl')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 export class ACLController {
-  constructor(private readonly service: ACLService) { }
+  constructor(private readonly service: ACLService) {}
 
   @Get('permissions')
   @ApiOperation({ summary: 'List all permissions' })

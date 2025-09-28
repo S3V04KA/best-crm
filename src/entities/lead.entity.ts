@@ -1,6 +1,17 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { CompanyType } from './company-type.entity';
 import { Workspace } from './workspace.entity';
+import { User } from './user.entity';
 
 export enum LeadStatus {
   SEND_PS,
@@ -13,7 +24,7 @@ export enum CallType {
   FIRST,
   SIGN,
   SEND_PS,
-  DONT_CALL
+  DONT_CALL,
 }
 
 @Entity('leads')
@@ -52,13 +63,19 @@ export class Lead {
     default: null,
     nullable: true,
   })
-  callType: CallType
+  callType: CallType;
 
-  @ManyToOne(() => CompanyType, (ct) => ct.leads, { eager: true, nullable: false })
+  @ManyToOne(() => CompanyType, (ct) => ct.leads, {
+    eager: true,
+    nullable: false,
+  })
   companyType: CompanyType;
 
   @ManyToOne(() => Workspace, (w) => w.leads, { cascade: true })
   workspace!: Workspace;
+
+  @ManyToOne(() => User, (u) => u.leads, { nullable: true })
+  responsible: User;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt!: Date;
@@ -69,5 +86,3 @@ export class Lead {
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz', nullable: true })
   deletedAt?: Date | null;
 }
-
-
