@@ -5,8 +5,6 @@ services:
     container_name: bestcrm_postgres
     env_file:
       - .env
-    ports:
-      - "5432:5432"
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     networks:
@@ -32,7 +30,7 @@ services:
       - .env
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.crm.rule=Host(`${DOMAIN}`)'
+      - 'traefik.http.routers.crm.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)'
       - 'traefik.http.routers.crm.entrypoints=http,https'
       - 'traefik.http.routers.crm.tls=true'
       - "traefik.http.routers.crm.tls.certresolver=letsEncrypt"
