@@ -6,9 +6,6 @@ services:
     networks:
       traefik:
     restart: unless-stopped
-    depends_on:
-      postgres:
-        condition: service_healthy
     volumes:
       - ./data:/app/data
     env_file:
