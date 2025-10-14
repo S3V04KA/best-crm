@@ -18,5 +18,6 @@ import { RolePermission } from 'src/entities/role-permission.entity';
   ],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}

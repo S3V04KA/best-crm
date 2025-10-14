@@ -37,6 +37,7 @@ import { WorkspaceGuard } from 'src/auth/workspace.guard';
 import { Workspace } from 'src/entities/workspace.entity';
 import { ApiWorkspaceId } from 'src/auth/workspace.decorator';
 import { User } from 'src/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 // swagger helper not needed
 
@@ -49,6 +50,7 @@ export class LeadsWorkspaceController {
   constructor(
     private readonly leadsService: LeadsService,
     private readonly mailService: MailService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Post('')
@@ -151,9 +153,19 @@ export class LeadsWorkspaceController {
     description: 'Result',
     schema: { type: 'object', properties: { messageId: { type: 'string' } } },
   })
-  async sendProposal(@Param('id') id: string, @Body() dto: SendProposalDto) {
+  async sendProposal(
+    @Req() req: { user: { userId: string } },
+    @Param('id') id: string,
+    @Body() dto: SendProposalDto,
+  ) {
+    const user = await this.usersService.getById(req.user.userId);
+
     // If not provided, default to lead email
     const lead = await this.leadsService.findOneWithWorkspace(id);
+
+    const text = lead.workspace.html
+      ? undefined
+      : lead.workspace.text?.replaceAll('{Name}', user.fullName);
 
     if (!lead.email) {
       throw new BadRequestException('Lead email not found');
@@ -169,7 +181,7 @@ export class LeadsWorkspaceController {
       return this.mailService.sendProposal({
         to,
         subject: dto.subject ? dto.subject : 'Комерческое предложение',
-        text: lead.workspace.html ? undefined : lead.workspace.text,
+        text: text,
         html: lead.workspace.html,
         user: process.env.SMTP_MAIL_USER || '',
         pass: process.env.SMTP_MAIL_PASS || '',
@@ -178,12 +190,12 @@ export class LeadsWorkspaceController {
     const file = await readFile(`./data/PS/${lead.workspace.filename}`);
 
     const attachment = file
-      ? { filename: lead.workspace.filename, content: file }
+      ? { filename: 'Комерческое предложение.pdf', content: file }
       : undefined;
     return this.mailService.sendProposal({
       to,
       subject: dto.subject ? dto.subject : 'Комерческое предложение',
-      text: lead.workspace.html ? undefined : lead.workspace.text,
+      text: text,
       html: lead.workspace.html,
       user: process.env.SMTP_MAIL_USER || '',
       pass: process.env.SMTP_MAIL_PASS || '',

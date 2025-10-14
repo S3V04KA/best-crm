@@ -13,6 +13,7 @@ import { User } from '../entities/user.entity';
 import { MailModule } from '../mail/mail.module';
 import { UserWorkspaceOverride } from 'src/entities/workspace-user-override.entity';
 import { LeadsController } from './leads.controller';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { LeadsController } from './leads.controller';
       User,
       UserWorkspaceOverride,
     ]),
+    UsersModule,
   ],
   controllers: [LeadsWorkspaceController, LeadsController],
   providers: [LeadsService, PermissionsGuard],
