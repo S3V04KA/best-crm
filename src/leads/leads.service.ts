@@ -24,7 +24,6 @@ export class LeadsService {
 
     const lead = this.leadRepo.create({
       ...data,
-      companyType: { id: companyType.id },
     });
     await this.leadRepo.save(lead);
 

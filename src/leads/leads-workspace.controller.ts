@@ -58,7 +58,10 @@ export class LeadsWorkspaceController {
     @Param('workspaceId') workspaceId: string,
     @Body() dto: CreateLeadDto,
   ) {
-    const data: Partial<Lead> = { ...dto } as Partial<Lead>;
+    const data: Partial<Lead> = {
+      ...dto,
+      companyType: { id: dto.companyTypeId } as unknown as CompanyType,
+    } as Partial<Lead>;
     if (!dto.companyTypeId) {
       throw new BadRequestException('');
     }
