@@ -38,7 +38,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    this.cacheManager.del(email);
+    await this.cacheManager.del(email);
 
     return user;
   }
@@ -51,14 +51,16 @@ export class AuthService {
 
     const code = generateSixDigitCode();
 
-    this.cacheManager.set(email, code);
+    await this.cacheManager.set(email, code);
 
-    this.mailService.sendProposal({
+    await this.mailService.sendProposal({
       to: email,
       subject: 'no-reply',
       text: code,
-      user: process.env.SMTP_MAIL_USER || '',
-      pass: process.env.SMTP_MAIL_PASS || '',
+      user:
+        process.env.SMTP_LOGIN_MAIL_USER || process.env.SMTP_MAIL_USER || '',
+      pass:
+        process.env.SMTP_LOGIN_MAIL_PASS || process.env.SMTP_MAIL_PASS || '',
     });
 
     return { success: true };
