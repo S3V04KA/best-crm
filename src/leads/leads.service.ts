@@ -22,7 +22,10 @@ export class LeadsService {
       throw new NotFoundException('Company type not found');
     }
 
-    const lead = this.leadRepo.create({ ...data, companyType });
+    const lead = this.leadRepo.create({
+      ...data,
+      companyType: { id: companyType.id },
+    });
     await this.leadRepo.save(lead);
 
     return { success: true, id: lead.id };
