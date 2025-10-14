@@ -135,7 +135,7 @@ export class WorkspaceController {
   })
   async updatePS(
     @Param('workspaceId') id: string,
-    @Body() data: UpdatePS,
+    @Body() data: Partial<UpdatePS>,
     @UploadedFile() file?: any,
   ) {
     return this.service.updatePS(id, data, file);
