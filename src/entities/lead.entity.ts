@@ -13,10 +13,10 @@ import { Workspace } from './workspace.entity';
 import { User } from './user.entity';
 
 export enum LeadStatus {
-  SEND_PS,
-  RECALL,
-  SIGN,
-  CANCEL,
+  SEND_PS, // blue
+  RECALL, // yellow
+  SIGN, // green
+  CANCEL, // red
 }
 
 export enum CallType {

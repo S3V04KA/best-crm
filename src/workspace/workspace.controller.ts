@@ -116,6 +116,16 @@ export class WorkspaceController {
     return this.service.addUserToWorkspace(workspaceId, userId);
   }
 
+  @Delete(':workspaceId/user/:userId')
+  @Permissions(PermissionCodes.usersManage)
+  @UseGuards(WorkspaceGuard)
+  async removeUser(
+    @Param('workspaceId') workspaceId: string,
+    @Param('userId') userId: string,
+  ) {
+    return this.service.removeUserFromWorkspace(workspaceId, userId);
+  }
+
   @Patch(':workspaceId/ps')
   @Permissions(PermissionCodes.workspaceUpdate)
   @UseInterceptors(FileInterceptor('file'))

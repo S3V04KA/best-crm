@@ -21,7 +21,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { PermissionCodes } from 'src/acl/enums/permission-codes';
-import { permission } from 'process';
 
 class CreateCompanyTypeDto {
   @IsString()

@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { UserWorkspaceOverride } from 'src/entities/workspace-user-override.entity';
 import { Workspace } from 'src/entities/workspace.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import {
   ResponseFullWorkspaceDto,
   ResponseWorkspaceDto,
@@ -113,6 +113,26 @@ export class WorkspaceService {
     await this.workspaceOverrideRepo.save(
       this.workspaceOverrideRepo.create({ user, workspace }),
     );
+
+    return { success: true };
+  }
+
+  async removeUserFromWorkspace(workspaceId: string, userId: string) {
+    const workspace = await this.workspaceRepo.findOne({
+      where: { id: workspaceId },
+    });
+    if (!workspace) throw new NotFoundException('Workspace not found');
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found');
+
+    const existing = await this.workspaceOverrideRepo.findOne({
+      where: { user: { id: userId }, workspace: { id: workspaceId } },
+    });
+    if (!existing) {
+      throw new BadRequestException('User is not in this workspace');
+    }
+
+    await this.workspaceOverrideRepo.softRemove(existing);
 
     return { success: true };
   }
