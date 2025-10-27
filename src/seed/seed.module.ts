@@ -8,6 +8,7 @@ import { SeedAdminService } from './roles/admin-role.service';
 import { SeedVP4CRService } from './roles/vp4cr-role.service';
 import { SeedRespService } from './roles/resp-role.service';
 import { SeedMemberService } from './roles/member-role.service';
+import { SeedKnowlageService } from './roles/knowlage-role';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Role, Permission, RolePermission])],
@@ -17,6 +18,7 @@ import { SeedMemberService } from './roles/member-role.service';
     SeedVP4CRService,
     SeedRespService,
     SeedMemberService,
+    SeedKnowlageService,
   ],
 })
 export class SeedModule {}
