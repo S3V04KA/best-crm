@@ -1,11 +1,9 @@
 import {
-  Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Unique,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Workspace } from './workspace.entity';
@@ -28,4 +26,7 @@ export class UserWorkspaceOverride {
   })
   @JoinColumn({ name: 'workspaceId' }) // Явно указываем колонку FK
   workspace!: Workspace;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

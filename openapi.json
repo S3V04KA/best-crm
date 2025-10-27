@@ -10,9 +10,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "App"
-        ]
+        "tags": ["App"]
       }
     },
     "/api/auth/register": {
@@ -42,9 +40,7 @@
           }
         },
         "summary": "Register new user",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/auth/send_code": {
@@ -66,9 +62,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/auth/login": {
@@ -98,9 +92,7 @@
           }
         },
         "summary": "Login and get JWT",
-        "tags": [
-          "Auth"
-        ]
+        "tags": ["Auth"]
       }
     },
     "/api/leads/{workspaceId}": {
@@ -138,9 +130,7 @@
           }
         ],
         "summary": "Create lead",
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
       },
       "get": {
         "operationId": "LeadsWorkspaceController_findAllFromWorkspace",
@@ -175,9 +165,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
       }
     },
     "/api/leads/{workspaceId}/me": {
@@ -214,9 +202,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
       }
     },
     "/api/leads/{workspaceId}/{id}": {
@@ -258,9 +244,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
       },
       "patch": {
         "operationId": "LeadsWorkspaceController_update",
@@ -304,9 +288,7 @@
           }
         ],
         "summary": "Update lead",
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
       },
       "delete": {
         "operationId": "LeadsWorkspaceController_remove",
@@ -352,9 +334,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
       }
     },
     "/api/leads/{workspaceId}/{id}/status": {
@@ -399,9 +379,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
       }
     },
     "/api/leads/{workspaceId}/{id}/proposal": {
@@ -459,9 +437,7 @@
           }
         ],
         "summary": "Send cooperation proposal via SMTP",
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
       }
     },
     "/api/leads": {
@@ -488,9 +464,59 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Leads"
-        ]
+        "tags": ["Leads"]
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "operationId": "UsersController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get current user",
+        "tags": ["Users"]
+      }
+    },
+    "/api/users": {
+      "get": {
+        "operationId": "UsersController_getAllUsers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Users"]
       }
     },
     "/api/company-types": {
@@ -513,10 +539,7 @@
                     "example": "B2B"
                   }
                 },
-                "required": [
-                  "code",
-                  "name"
-                ]
+                "required": ["code", "name"]
               }
             }
           }
@@ -532,9 +555,7 @@
           }
         ],
         "summary": "Create company type",
-        "tags": [
-          "Company Types"
-        ]
+        "tags": ["Company Types"]
       },
       "get": {
         "operationId": "CompanyTypeController_findAll",
@@ -581,9 +602,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Company Types"
-        ]
+        "tags": ["Company Types"]
       }
     },
     "/api/company-types/{id}": {
@@ -638,9 +657,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Company Types"
-        ]
+        "tags": ["Company Types"]
       },
       "patch": {
         "operationId": "CompanyTypeController_update",
@@ -685,9 +702,7 @@
           }
         ],
         "summary": "Update company type",
-        "tags": [
-          "Company Types"
-        ]
+        "tags": ["Company Types"]
       },
       "delete": {
         "operationId": "CompanyTypeController_remove",
@@ -724,9 +739,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Company Types"
-        ]
+        "tags": ["Company Types"]
       }
     },
     "/api/acl/permissions": {
@@ -751,9 +764,7 @@
           }
         ],
         "summary": "List all permissions",
-        "tags": [
-          "Access Control"
-        ]
+        "tags": ["Access Control"]
       }
     },
     "/api/acl/me/permissions": {
@@ -778,9 +789,7 @@
           }
         ],
         "summary": "List current user permissions (role + overrides)",
-        "tags": [
-          "Access Control"
-        ]
+        "tags": ["Access Control"]
       }
     },
     "/api/acl/roles": {
@@ -798,9 +807,7 @@
           }
         ],
         "summary": "List roles",
-        "tags": [
-          "Access Control"
-        ]
+        "tags": ["Access Control"]
       },
       "post": {
         "operationId": "ACLController_createRole",
@@ -816,9 +823,7 @@
           }
         ],
         "summary": "Create role",
-        "tags": [
-          "Access Control"
-        ]
+        "tags": ["Access Control"]
       }
     },
     "/api/acl/roles/{id}": {
@@ -845,9 +850,7 @@
           }
         ],
         "summary": "Update role",
-        "tags": [
-          "Access Control"
-        ]
+        "tags": ["Access Control"]
       }
     },
     "/api/acl/roles/{id}/permissions": {
@@ -877,9 +880,7 @@
                     }
                   }
                 },
-                "required": [
-                  "permissionCodes"
-                ]
+                "required": ["permissionCodes"]
               }
             }
           }
@@ -895,9 +896,7 @@
           }
         ],
         "summary": "Set role permissions by codes",
-        "tags": [
-          "Access Control"
-        ]
+        "tags": ["Access Control"]
       }
     },
     "/api/acl/users/{id}/overrides": {
@@ -935,9 +934,7 @@
                     }
                   }
                 },
-                "required": [
-                  "overrides"
-                ]
+                "required": ["overrides"]
               }
             }
           }
@@ -953,9 +950,7 @@
           }
         ],
         "summary": "Set user permission overrides",
-        "tags": [
-          "Access Control"
-        ]
+        "tags": ["Access Control"]
       }
     },
     "/api/acl/users/{userId}/role": {
@@ -991,65 +986,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Access Control"
-        ]
-      }
-    },
-    "/api/users/me": {
-      "get": {
-        "operationId": "UsersController_me",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Get current user",
-        "tags": [
-          "Users"
-        ]
-      }
-    },
-    "/api/users": {
-      "get": {
-        "operationId": "UsersController_getAllUsers",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": [
-          "Users"
-        ]
+        "tags": ["Access Control"]
       }
     },
     "/api/workspaces": {
@@ -1076,9 +1013,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Workspace"
-        ]
+        "tags": ["Workspace"]
       },
       "post": {
         "operationId": "WorkspaceController_create",
@@ -1110,9 +1045,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Workspace"
-        ]
+        "tags": ["Workspace"]
       }
     },
     "/api/workspaces/me": {
@@ -1139,9 +1072,43 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Workspace"
-        ]
+        "tags": ["Workspace"]
+      }
+    },
+    "/api/workspaces/workspaces/user/{userId}": {
+      "get": {
+        "operationId": "WorkspaceController_listUserWorkspaces",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseWorkspaceDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Workspace"]
       }
     },
     "/api/workspaces/{workspaceId}": {
@@ -1174,9 +1141,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Workspace"
-        ]
+        "tags": ["Workspace"]
       }
     },
     "/api/workspaces/{workspaceId}/users": {
@@ -1209,9 +1174,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Workspace"
-        ]
+        "tags": ["Workspace"]
       }
     },
     "/api/workspaces/{workspaceId}/user/{userId}": {
@@ -1245,9 +1208,39 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Workspace"
-        ]
+        "tags": ["Workspace"]
+      },
+      "delete": {
+        "operationId": "WorkspaceController_removeUser",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": ["Workspace"]
       }
     },
     "/api/workspaces/{workspaceId}/ps": {
@@ -1297,9 +1290,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Workspace"
-        ]
+        "tags": ["Workspace"]
       }
     },
     "/api/workspaces/{id}": {
@@ -1325,9 +1316,7 @@
             "bearer": []
           }
         ],
-        "tags": [
-          "Workspace"
-        ]
+        "tags": ["Workspace"]
       }
     }
   },
@@ -1360,10 +1349,7 @@
             "example": "ivan@example.com"
           }
         },
-        "required": [
-          "fullName",
-          "email"
-        ]
+        "required": ["fullName", "email"]
       },
       "AuthTokenResponseDto": {
         "type": "object",
@@ -1373,9 +1359,7 @@
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
           }
         },
-        "required": [
-          "access_token"
-        ]
+        "required": ["access_token"]
       },
       "SendCodeDto": {
         "type": "object",
@@ -1385,9 +1369,7 @@
             "example": "ivan@example.com"
           }
         },
-        "required": [
-          "email"
-        ]
+        "required": ["email"]
       },
       "LoginDto": {
         "type": "object",
@@ -1402,10 +1384,7 @@
             "maxLength": 6
           }
         },
-        "required": [
-          "email",
-          "code"
-        ]
+        "required": ["email", "code"]
       },
       "CreateLeadDto": {
         "type": "object",
@@ -1462,11 +1441,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "id",
-          "fullName",
-          "email"
-        ]
+        "required": ["id", "fullName", "email"]
       },
       "LeadResponseDto": {
         "type": "object",
@@ -1497,21 +1472,11 @@
           },
           "status": {
             "type": "number",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ]
+            "enum": [0, 1, 2, 3]
           },
           "callType": {
             "type": "number",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ]
+            "enum": [0, 1, 2, 3]
           },
           "companyType": {
             "type": "object",
@@ -1539,13 +1504,7 @@
             "example": "2025-09-18T10:00:00.000Z"
           }
         },
-        "required": [
-          "id",
-          "email",
-          "responsible",
-          "createdAt",
-          "updatedAt"
-        ]
+        "required": ["id", "email", "responsible", "createdAt", "updatedAt"]
       },
       "UpdateLeadDto": {
         "type": "object",
@@ -1585,22 +1544,12 @@
           },
           "status": {
             "type": "number",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ],
+            "enum": [0, 1, 2, 3],
             "nullable": true
           },
           "callType": {
             "type": "number",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ],
+            "enum": [0, 1, 2, 3],
             "nullable": true
           }
         },
@@ -1641,22 +1590,12 @@
           },
           "status": {
             "type": "number",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ],
+            "enum": [0, 1, 2, 3],
             "nullable": true
           },
           "callType": {
             "type": "number",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ],
+            "enum": [0, 1, 2, 3],
             "nullable": true
           }
         },
@@ -1678,9 +1617,7 @@
             "nullable": true
           }
         },
-        "required": [
-          "subject"
-        ]
+        "required": ["subject"]
       },
       "PermissionsResponseDto": {
         "type": "object",
@@ -1714,9 +1651,7 @@
             }
           }
         },
-        "required": [
-          "permissions"
-        ]
+        "required": ["permissions"]
       },
       "SetUserRoleDto": {
         "type": "object",
@@ -1725,9 +1660,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "roleId"
-        ]
+        "required": ["roleId"]
       },
       "ResponseWorkspaceDto": {
         "type": "object",
@@ -1740,10 +1673,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "name",
-          "id"
-        ]
+        "required": ["name", "id"]
       },
       "CreateWorkspaceDto": {
         "type": "object",
@@ -1753,9 +1683,7 @@
             "example": "Test Workspace"
           }
         },
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       },
       "ResponseFullWorkspaceDto": {
         "type": "object",
@@ -1781,13 +1709,7 @@
             "nullable": true
           }
         },
-        "required": [
-          "name",
-          "id",
-          "createdAt",
-          "updatedAt",
-          "deletedAt"
-        ]
+        "required": ["name", "id", "createdAt", "updatedAt", "deletedAt"]
       }
     }
   }
