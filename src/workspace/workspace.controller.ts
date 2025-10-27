@@ -72,6 +72,16 @@ export class WorkspaceController {
     return this.service.listCurrntUserWorkspaces(req.user.userId);
   }
 
+  @Get('workspaces/user/:userId')
+  @ApiOkResponse({
+    type: ResponseWorkspaceDto,
+    isArray: true,
+  })
+  @Permissions(PermissionCodes.workspaceManage)
+  async listUserWorkspaces(@Param('userId') userId: string) {
+    return this.service.listCurrntUserWorkspaces(userId);
+  }
+
   @Get(':workspaceId')
   @ApiOkResponse({
     type: ResponseWorkspaceDto,
