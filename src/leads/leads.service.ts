@@ -85,7 +85,9 @@ export class LeadsService {
    * Parse CSV content and return array of rows
    */
   private parseCsvContent(csvContent: string): CsvImportRowDto[] {
-    const lines = csvContent.split('\n').filter((line) => line.trim());
+    // First, normalize the CSV content to handle multi-line fields properly
+    const normalizedContent = this.normalizeCsvContent(csvContent);
+    const lines = normalizedContent.split('\n').filter((line) => line.trim());
 
     // Find header line (skip empty lines at the beginning)
     let headerLineIndex = 0;
@@ -138,8 +140,14 @@ export class LeadsService {
 
       const values = this.parseCsvLine(line);
 
-      if (values.length < header.length) {
-        throw new BadRequestException(`Row ${i + 1}: Column count mismatch`);
+      // Pad with empty strings if we have fewer values than headers
+      while (values.length < header.length) {
+        values.push('');
+      }
+
+      // Truncate if we have more values than headers (ignore extra columns)
+      if (values.length > header.length) {
+        values.splice(header.length);
       }
 
       const row: CsvImportRowDto = {
@@ -175,6 +183,61 @@ export class LeadsService {
     }
 
     return rows;
+  }
+
+  /**
+   * Normalize CSV content to handle multi-line fields and complex formatting
+   */
+  private normalizeCsvContent(csvContent: string): string {
+    const lines = csvContent.split('\n');
+    const normalizedLines: string[] = [];
+    let currentLine = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Check if we're starting a new field or continuing a multi-line field
+      if (!inQuotes && line.trim() === '') {
+        // Empty line outside quotes - skip it
+        continue;
+      }
+
+      // Process the line character by character to track quote state
+      for (let j = 0; j < line.length; j++) {
+        const char = line[j];
+
+        if (char === '"') {
+          if (inQuotes && line[j + 1] === '"') {
+            // Escaped quote
+            currentLine += '"';
+            j++; // Skip next quote
+          } else {
+            // Toggle quote state
+            inQuotes = !inQuotes;
+            currentLine += char;
+          }
+        } else {
+          currentLine += char;
+        }
+      }
+
+      // If we're not in quotes, this line is complete
+      if (!inQuotes) {
+        normalizedLines.push(currentLine);
+        currentLine = '';
+      } else {
+        // We're still in quotes, continue on next line
+        currentLine += ' ';
+      }
+    }
+
+    // Add any remaining content
+    if (currentLine.trim()) {
+      normalizedLines.push(currentLine);
+    }
+
+    return normalizedLines.join('\n');
   }
 
   /**
