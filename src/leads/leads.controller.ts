@@ -80,8 +80,6 @@ export class LeadsController {
   async importCsv(
     @UploadedFile() file: any,
     @Body('workspaceId') workspaceId: string,
-    @Body('companyTypeId') companyTypeId?: string,
-    @Body('responsibleId') responsibleId?: string,
   ): Promise<CsvImportResponseDto> {
     if (!file) {
       throw new Error('No file uploaded');
@@ -92,11 +90,6 @@ export class LeadsController {
     }
 
     const csvContent = file.buffer.toString('utf-8');
-    return this.leadsService.importFromCsv(
-      csvContent,
-      workspaceId,
-      companyTypeId,
-      responsibleId,
-    );
+    return this.leadsService.importFromCsv(csvContent, workspaceId);
   }
 }

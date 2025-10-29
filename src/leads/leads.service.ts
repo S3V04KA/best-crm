@@ -218,21 +218,7 @@ export class LeadsService {
   async importFromCsv(
     csvContent: string,
     workspaceId: string,
-    companyTypeId?: string,
-    responsibleId?: string,
   ): Promise<CsvImportResponseDto> {
-    // Validate company type exists if provided
-    let companyType: CompanyType | undefined = undefined;
-    if (companyTypeId) {
-      const foundCompanyType = await this.companyTypeRepo.findOne({
-        where: { id: companyTypeId },
-      });
-      if (!foundCompanyType) {
-        throw new NotFoundException('Company type not found');
-      }
-      companyType = foundCompanyType;
-    }
-
     // Parse CSV content
     let csvRows: CsvImportRowDto[];
     try {
@@ -272,15 +258,7 @@ export class LeadsService {
           phoneNumber: row.companyPhone?.trim() || null,
           email: row.companyEmail?.trim() || null,
           workspace: { id: workspaceId } as any,
-          responsible: responsibleId
-            ? ({ id: responsibleId } as any)
-            : undefined,
         };
-
-        // Add company type if provided
-        if (companyType) {
-          leadData.companyType = companyType;
-        }
 
         const lead = this.leadRepo.create(leadData);
         const savedLead = await this.leadRepo.save(lead);
