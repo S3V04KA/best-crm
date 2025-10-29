@@ -61,14 +61,6 @@ export class LeadsController {
           type: 'string',
           description: 'UUID of the workspace',
         },
-        companyTypeId: {
-          type: 'string',
-          description: 'UUID of the company type (optional)',
-        },
-        responsibleId: {
-          type: 'string',
-          description: 'UUID of the responsible user (optional)',
-        },
       },
       required: ['file', 'workspaceId'],
     },
