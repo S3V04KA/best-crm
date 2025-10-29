@@ -78,7 +78,7 @@ export class WorkspaceService {
       withDeleted: false,
     });
 
-    return relations.map((r) => r.user);
+    return relations.filter((r) => r.user !== null).map((r) => r.user);
   }
 
   async listCurrntUserWorkspaces(
@@ -87,12 +87,15 @@ export class WorkspaceService {
     const overrides = await this.workspaceOverrideRepo.find({
       where: { user: { id: userId } },
       relations: { workspace: true },
+      withDeleted: false,
     });
 
-    return overrides.map((w) => ({
-      id: w.workspace.id,
-      name: w.workspace.name,
-    }));
+    return overrides
+      .filter((w) => w.workspace !== null)
+      .map((w) => ({
+        id: w.workspace.id,
+        name: w.workspace.name,
+      }));
   }
 
   async addUserToWorkspace(workspaceId: string, userId: string) {
@@ -145,8 +148,9 @@ export class WorkspaceService {
     if (!workspace) throw new NotFoundException('Workspace not found');
 
     if (file) {
-      await createFile('./data/PS/', file.originalname, file.buffer);
-      workspace.filename = file.originalname;
+      const filename = String(file.originalname || 'unknown');
+      await createFile('./data/PS/', filename, file.buffer);
+      workspace.filename = filename;
     }
 
     workspace.text = data.text ? data.text : undefined;
