@@ -309,11 +309,6 @@ export class LeadsService {
           throw new Error('Company name is required');
         }
 
-        // Validate email format if provided
-        if (row.companyEmail && !this.isValidEmail(row.companyEmail)) {
-          throw new Error('Invalid email format');
-        }
-
         // Create lead
         const leadData: Partial<Lead> = {
           name: row.companyName.trim(),

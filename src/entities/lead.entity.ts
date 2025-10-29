@@ -39,7 +39,7 @@ export class Lead {
   @Column({ name: 'phone_number', type: 'varchar', length: 64, nullable: true })
   phoneNumber?: string | null;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 1024, nullable: true })
   site?: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
