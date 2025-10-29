@@ -12,8 +12,6 @@
 |----------|-----|--------------|----------|
 | file | File | Да | CSV файл с данными лидов |
 | workspaceId | string | Да | UUID рабочего пространства |
-| companyTypeId | string | Нет | UUID типа компании |
-| responsibleId | string | Нет | UUID ответственного пользователя |
 
 ### Формат CSV файла
 
@@ -82,19 +80,10 @@ CSV файл должен содержать следующие столбцы. 
 ### Пример использования с curl
 
 ```bash
-# Импорт с обязательными параметрами (только workspaceId)
+# Импорт с минимальными параметрами (только workspaceId)
 curl -X POST \
   http://localhost:3000/api/leads/import-csv \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -F "file=@BAZA - Лист1.csv" \
   -F "workspaceId=uuid-of-workspace"
-
-# Импорт с дополнительными параметрами
-curl -X POST \
-  http://localhost:3000/api/leads/import-csv \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -F "file=@BAZA - Лист1.csv" \
-  -F "workspaceId=uuid-of-workspace" \
-  -F "companyTypeId=uuid-of-company-type" \
-  -F "responsibleId=uuid-of-responsible-user"
 ```

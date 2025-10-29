@@ -66,9 +66,9 @@ export class Lead {
 
   @ManyToOne(() => CompanyType, (ct) => ct.leads, {
     eager: true,
-    nullable: false,
+    nullable: true,
   })
-  companyType: CompanyType;
+  companyType?: CompanyType;
 
   @ManyToOne(() => Workspace, (w) => w.leads, { cascade: true })
   workspace!: Workspace;

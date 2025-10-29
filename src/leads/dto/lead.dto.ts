@@ -28,9 +28,10 @@ export class CreateLeadDto {
   @IsOptional()
   comment?: string;
 
-  @ApiProperty({ example: 'uuid-of-company-type' })
+  @ApiPropertyOptional({ example: 'uuid-of-company-type' })
   @IsUUID()
-  companyTypeId: string;
+  @IsOptional()
+  companyTypeId?: string;
 }
 
 export class UpdateLeadDto extends CreateLeadDto {
