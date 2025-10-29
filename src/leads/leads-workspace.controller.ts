@@ -8,7 +8,9 @@ import {
   Patch,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LeadsService } from './leads.service';
 import { Permissions } from 'src/auth/roles.decorator';
@@ -19,6 +21,7 @@ import { CompanyType } from 'src/entities/company-type.entity';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -38,6 +41,8 @@ import { Workspace } from 'src/entities/workspace.entity';
 import { ApiWorkspaceId } from 'src/auth/workspace.decorator';
 import { User } from 'src/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import { CsvImportResponseDto } from './dto/csv-import.dto';
 
 // swagger helper not needed
 
@@ -52,6 +57,42 @@ export class LeadsWorkspaceController {
     private readonly mailService: MailService,
     private readonly usersService: UsersService,
   ) {}
+
+  @Post('import-csv')
+  @Permissions(PermissionCodes.leadManage)
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+      required: ['file'],
+    },
+  })
+  @ApiOkResponse({
+    description: 'CSV import result',
+    type: CsvImportResponseDto,
+  })
+  async importCsv(
+    @UploadedFile() file: any,
+    @Param('workspaceId') workspaceId: string,
+  ): Promise<CsvImportResponseDto> {
+    if (!file) {
+      throw new Error('No file uploaded');
+    }
+
+    if (!file.mimetype.includes('csv') && !file.originalname.endsWith('.csv')) {
+      throw new Error('File must be a CSV file');
+    }
+
+    const csvContent = file.buffer.toString('utf-8');
+    return this.leadsService.importFromCsv(csvContent, workspaceId);
+  }
 
   @Post('')
   @Permissions(PermissionCodes.leadCreate)
