@@ -221,7 +221,7 @@ export class LeadsWorkspaceController {
     if (!lead.workspace.filename)
       return this.mailService.sendProposal({
         to,
-        subject: dto.subject ? dto.subject : 'Комерческое предложение',
+        subject: dto.subject ? dto.subject : 'Коммерческое предложение',
         text: text,
         html: lead.workspace.html,
         user: process.env.SMTP_MAIL_USER || '',
@@ -231,11 +231,11 @@ export class LeadsWorkspaceController {
     const file = await readFile(`./data/PS/${lead.workspace.filename}`);
 
     const attachment = file
-      ? { filename: 'Комерческое предложение.pdf', content: file }
+      ? { filename: 'Коммерческое предложение.pdf', content: file }
       : undefined;
     return this.mailService.sendProposal({
       to,
-      subject: dto.subject ? dto.subject : 'Комерческое предложение',
+      subject: dto.subject ? dto.subject : 'Коммерческое предложение',
       text: text,
       html: lead.workspace.html,
       user: process.env.SMTP_MAIL_USER || '',

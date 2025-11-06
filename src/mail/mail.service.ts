@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { createTransport } from 'nodemailer';
-import SMTPPool from 'nodemailer/lib/smtp-pool';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 @Injectable()
