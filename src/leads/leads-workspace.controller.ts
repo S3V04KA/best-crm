@@ -223,7 +223,7 @@ export class LeadsWorkspaceController {
         to,
         subject: dto.subject ? dto.subject : 'Коммерческое предложение',
         text: text,
-        html: lead.workspace.html,
+        html: lead.workspace.html?.replaceAll('{Name}', user.fullName),
         user: process.env.SMTP_MAIL_USER || '',
         pass: process.env.SMTP_MAIL_PASS || '',
       });
@@ -237,7 +237,7 @@ export class LeadsWorkspaceController {
       to,
       subject: dto.subject ? dto.subject : 'Коммерческое предложение',
       text: text,
-      html: lead.workspace.html,
+      html: lead.workspace.html?.replaceAll('{Name}', user.fullName),
       user: process.env.SMTP_MAIL_USER || '',
       pass: process.env.SMTP_MAIL_PASS || '',
       attachment,
